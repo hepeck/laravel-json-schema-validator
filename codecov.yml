@@ -1,0 +1,34 @@
+# .codecov.yml
+
+codecov:
+  require_ci_to_pass: yes   # Only upload coverage if CI passes
+  notify:
+    wait_for_ci: yes        # Wait until CI completes before processing
+
+coverage:
+  precision: 2              # Decimal places for coverage numbers
+  round: down               # Rounding mode (up, down, nearest)
+  range: "70..90"           # Coverage range considered "green"
+
+  status:
+    project:
+      default:
+        target: auto        # Target coverage (can be %, auto, or a number)
+        threshold: 1%       # Allowable drop before failing
+    patch:
+      default:
+        target: 80%         # New/changed code must have this coverage
+    changes: off            # Disable "changes" status check
+
+parsers:
+  gcov:
+    branch_detection:
+      conditional: yes
+      loop: yes
+      method: no
+      macro: no
+
+comment:
+  layout: "reach,diff,flags,files"
+  behavior: default
+  require_changes: no       # Always post a comment, even if no changes
