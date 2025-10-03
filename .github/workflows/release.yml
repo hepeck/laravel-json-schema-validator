@@ -1,0 +1,54 @@
+on:
+  pull_request:
+    types:
+      - opened
+      - labeled
+      - unlabeled
+      - synchronize
+      - closed
+
+name: Create Release
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    if: github.event.pull_request.base.ref == 'main'
+    name: Create Release
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set bump from labels
+        id: set_bump
+        shell: bash
+        run: |
+          LABELS='${{ toJson(github.event.pull_request.labels) }}'
+          echo "Checking labels: $LABELS"
+
+          # Find the first label that starts with 'semver-' and get the rest of the name
+          default_bump=$(echo "$LABELS" | jq -r '.[] | select(.name | startswith("semver-")) | .name | ltrimstr("semver-")' | head -n 1)
+
+          if [ -z "$default_bump" ]; then
+            echo "No 'semver-' label found, using default bump as 'patch'."
+            default_bump="patch"  # Default to "patch" if no label is found
+          fi
+
+          echo "Found default_bump: $default_bump"
+
+          # Set default_bump as an output for later use
+          echo "::set-output name=default_bump::$default_bump"
+      - name: Bump version and push tag
+        id: tag_version
+        uses: mathieudutour/github-tag-action@v6.2
+        with:
+          dry_run: ${{ github.event.pull_request.merged && 'false' || 'true' }}
+          default_bump: ${{ steps.set_bump.outputs.default_bump || 'patch' }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Create a release
+        if: github.event.pull_request.merged == true
+        uses: ncipollo/release-action@v1
+        with:
+          tag: ${{ steps.tag_version.outputs.new_tag }}
+          name: Release ${{ steps.tag_version.outputs.new_tag }}
+          body: ${{ steps.tag_version.outputs.changelog }}

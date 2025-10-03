@@ -1,0 +1,46 @@
+{
+  "name": "hepeck/laravel-json-schema-validator",
+  "description": "A Laravel package that integrates JSON Schema validation into form requests and validators.",
+  "license": "AGPL-3.0-or-later",
+  "keywords": [
+    "laravel",
+    "validation",
+    "json-schema",
+    "form-request",
+    "laravel-package"
+  ],
+  "authors": [
+    {
+      "name": "Ninoslav Jaric",
+      "email": "jaricninoslav@gmail.com"
+    }
+  ],
+  "require": {
+    "php": "^8.2",
+    "justinrainbow/json-schema": "^6.5",
+    "laravel/framework": "^12.0"
+  },
+  "require-dev": {
+    "mockery/mockery": "^1.6",
+    "phpunit/phpunit": "^11.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "Hepeck\\": "src/app/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Hepeck\\Tests\\": "src/tests/"
+    }
+  },
+  "extra": {
+    "laravel": {
+      "providers": [
+        "Hepeck\\app\\Providers\\JsonSchemaRequestServiceProvider"
+      ]
+    }
+  },
+  "minimum-stability": "stable",
+  "prefer-stable": true
+}
