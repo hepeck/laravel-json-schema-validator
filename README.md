@@ -1,5 +1,5 @@
-[![Unit test execution](https://github.com/hepeck/laravel-json-schema-validator/actions/workflows/unittests.yaml/badge.svg)](https://github.com/hepeck/laravel-json-schema-validator/actions/workflows/unittests.yaml)
-[![Create Release](https://github.com/hepeck/laravel-json-schema-validator/actions/workflows/release.yaml/badge.svg)](https://github.com/hepeck/laravel-json-schema-validator/actions/workflows/release.yaml)
+[![Unit test execution](https://github.com/hepeck/laravel-json-schema-validator/actions/workflows/unittests.yml/badge.svg)](https://github.com/hepeck/laravel-json-schema-validator/actions/workflows/unittests.yml)
+[![Create Release](https://github.com/hepeck/laravel-json-schema-validator/actions/workflows/release.yml/badge.svg)](https://github.com/hepeck/laravel-json-schema-validator/actions/workflows/release.yml)
 [![codecov](https://codecov.io/github/hepeck/laravel-json-schema-validator/graph/badge.svg?token=H8D6C4GTY5)](https://codecov.io/github/hepeck/laravel-json-schema-validator)
 
 # Laravel JSON Schema Validator
