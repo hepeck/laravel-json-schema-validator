@@ -1,6 +1,6 @@
 <?php
 
-namespace Hepeck\Tests\Unit;
+namespace HepeckTests\Unit;
 
 use Hepeck\Http\JsonSchemaValidator;
 use Illuminate\Translation\ArrayLoader;

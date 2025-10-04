@@ -1,9 +1,9 @@
 <?php
 
-namespace Hepeck\Tests\Unit;
+namespace HepeckTests\Unit;
 
-use Hepeck\Http\Requests\JsonSchemaRequest;
 use Hepeck\Http\JsonSchemaValidator;
+use Hepeck\Http\Requests\JsonSchemaRequest;
 use Illuminate\Translation\ArrayLoader;
 use Illuminate\Translation\Translator;
 use Illuminate\Validation\ValidationException;

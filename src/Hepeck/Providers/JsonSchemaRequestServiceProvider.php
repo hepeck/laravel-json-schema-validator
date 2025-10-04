@@ -1,6 +1,6 @@
 <?php
 
-namespace Hepeck\app\Providers;
+namespace Hepeck\Providers;
 
 use Hepeck\Http\Requests\JsonSchemaRequest;
 use Illuminate\Foundation\Application;

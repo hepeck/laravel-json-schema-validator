@@ -1,8 +1,8 @@
 <?php
 
-namespace Hepeck\Tests\Unit;
+namespace HepeckTests\Unit;
 
-use Hepeck\app\Providers\JsonSchemaRequestServiceProvider;
+use Hepeck\Providers\JsonSchemaRequestServiceProvider;
 use Hepeck\Http\Requests\JsonSchemaRequest;
 use Illuminate\Container\Container;
 use PHPUnit\Framework\TestCase;

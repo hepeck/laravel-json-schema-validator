@@ -26,18 +26,18 @@
   },
   "autoload": {
     "psr-4": {
-      "Hepeck\\": "src/app/"
+      "Hepeck\\": "src/Hepeck/"
     }
   },
   "autoload-dev": {
     "psr-4": {
-      "Hepeck\\Tests\\": "src/tests/"
+      "HepeckTests\\": "tests/HepeckTests/"
     }
   },
   "extra": {
     "laravel": {
       "providers": [
-        "Hepeck\\app\\Providers\\JsonSchemaRequestServiceProvider"
+        "Hepeck\\Providers\\JsonSchemaRequestServiceProvider"
       ]
     }
   },
