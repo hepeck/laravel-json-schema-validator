@@ -14,8 +14,7 @@ class JsonSchemaValidatorTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-
-        $this->schemaPath = sys_get_temp_dir() . '/user-schema.json';
+        $this->schemaPath = tempnam('/tpm', 'unittest_');
 
         file_put_contents($this->schemaPath, json_encode([
             '$schema' => "https://json-schema.org/draft/2020-12/schema",
@@ -38,7 +37,7 @@ class JsonSchemaValidatorTest extends TestCase
             [], [], []
         );
 
-        $validator->setSchema(basename($this->schemaPath));
+        $validator->setSchema($this->schemaPath);
 
         $this->assertTrue($validator->passes());
         $this->assertTrue($validator->errors()->isEmpty());
@@ -53,7 +52,7 @@ class JsonSchemaValidatorTest extends TestCase
             [], [], []
         );
 
-        $validator->setSchema(basename($this->schemaPath));
+        $validator->setSchema($this->schemaPath);
 
         $this->assertFalse($validator->passes());
         $this->assertFalse($validator->errors()->isEmpty());

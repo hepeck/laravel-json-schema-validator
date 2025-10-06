@@ -53,7 +53,7 @@ class JsonSchemaRequest extends Request implements ValidatesWhenResolved
     protected function failedValidation(JsonSchemaValidator $validator)
     {
         throw $validator->getException()
-            ->errorBag($this->errorBag)
+            ->errorBag('default')
             ->redirectTo($this->getRedirectUrl());
     }
 

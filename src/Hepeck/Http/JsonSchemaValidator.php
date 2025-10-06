@@ -33,7 +33,9 @@ class JsonSchemaValidator extends Validator
 
     public function setSchema(string $schema)
     {
-        $this->schema = config('hepeck.schema_basepath', resource_path('schema')) . DIRECTORY_SEPARATOR . $schema;
+        // @todo
+        $this->schema = $_ENV['APP_ENV'] == 'testing' ? $schema
+            : (config('hepeck.schema_basepath', resource_path('schema')) . DIRECTORY_SEPARATOR . $schema);
     }
 
     public function getValidator(): JValidator

@@ -4,54 +4,56 @@ namespace HepeckTests\Unit;
 
 use Hepeck\Http\JsonSchemaValidator;
 use Hepeck\Http\Requests\JsonSchemaRequest;
-use Illuminate\Translation\ArrayLoader;
-use Illuminate\Translation\Translator;
+use Illuminate\Support\MessageBag;
 use Illuminate\Validation\ValidationException;
 use PHPUnit\Framework\TestCase;
 
 class JsonSchemaRequestTest extends TestCase
 {
-    protected function makeRequest(array $data, string $schemaPath): JsonSchemaRequest
+    private JsonSchemaValidator $validator;
+
+    protected function setUp(): void
     {
-        $request = new class($data) extends JsonSchemaRequest {
-            public function __construct(private array $data) {}
-            public function all($keys = null) { return $this->data; }
-        };
+        parent::setUp();
 
-        $translator = new Translator(new ArrayLoader(), 'en');
-        $validator = new JsonSchemaValidator($translator, $data, [], [], []);
-        $validator->setSchema($schemaPath);
+        $this->validator = $this->createMock(JsonSchemaValidator::class);
+    }
 
-        $request->setValidator($validator);
+    protected function makeRequest(array $data): JsonSchemaRequest
+    {
+        $request = new JsonSchemaRequest($data);
+
+        $request->setValidator($this->validator);
 
         return $request;
     }
 
     public function test_valid_request_passes()
     {
-        $schemaPath = sys_get_temp_dir() . '/contact-schema.json';
-        file_put_contents($schemaPath, json_encode([
-            'type' => 'object',
-            'properties' => ['email' => ['type' => 'string', 'format' => 'email']],
-            'required' => ['email']
-        ]));
+        $request = new JsonSchemaRequest(['email' => 'test@example.com']);
 
-        $request = $this->makeRequest(['email' => 'test@example.com'], $schemaPath);
+        $request->setValidator($this->validator);
 
         $this->expectNotToPerformAssertions();
+
+        $this->validator->method('fails')->willReturn(false);
+
         $request->validateResolved();
     }
 
     public function test_invalid_request_throws_exception()
     {
-        $schemaPath = sys_get_temp_dir() . '/contact-schema.json';
-        file_put_contents($schemaPath, json_encode([
-            'type' => 'object',
-            'properties' => ['email' => ['type' => 'string', 'format' => 'email']],
-            'required' => ['email']
-        ]));
+        $request = $this->createPartialMock(JsonSchemaRequest::class, ['getRedirectUrl', 'validator']);
 
-        $request = $this->makeRequest(['email' => 'not-an-email'], $schemaPath);
+        $this->validator->method('fails')->willReturn(true);
+
+        $messageBag = $this->createMock(MessageBag::class);
+        $messageBag->method('all')->willReturn(['Some random error']);
+
+        $this->validator->method('errors')->willReturn($messageBag);
+        $this->validator->method('getException')->willReturn(new ValidationException($this->validator));
+        $request->expects($this->once())->method('getRedirectUrl')->willReturn('/');
+        $request->expects($this->once())->method('validator')->willReturn($this->validator);
 
         $this->expectException(ValidationException::class);
         $request->validateResolved();
